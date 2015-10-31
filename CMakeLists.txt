@@ -1,25 +1,23 @@
-cmake_minimum_required (VERSION 2.8.11)
+CMAKE_MINIMUM_REQUIRED (VERSION 2.8.11)
 
-project(catch_test)
-add_executable (catch_test main.cc)
+PROJECT(catch_test)
+ADD_EXECUTABLE(catch_test main.cc)
 
-enable_testing()
+ENABLE_TESTING()
 
-add_custom_target( setup_tests
+ADD_CUSTOM_TARGET(setup_tests
 	COMMAND catch_test --list-test-names-only >testlist || true
 	COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR}
 	DEPENDS catch_test
 	)
 
 IF(EXISTS testlist)
-file(STRINGS testlist tests)
-FOREACH(test ${tests})
-	string(REPLACE " " "_" testname ${test})
-	MESSAGE("adding test ${testname}")
-	add_test( ${testname} catch_test ${test})
-ENDFOREACH()
+  FILE(STRINGS testlist tests)
+  FOREACH(test ${tests})
+    STRING(REPLACE " " "_" testname ${test})
+    MESSAGE("adding test ${testname}")
+    ADD_TEST( ${testname} catch_test ${test})
+  ENDFOREACH()
 ELSE()
-MESSAGE(" please run 'make setup_tests' to discover unit tests")
+  MESSAGE(" please run 'make setup_tests' to discover unit tests")
 ENDIF()
-
-#add_test( testname ./catch_test )
